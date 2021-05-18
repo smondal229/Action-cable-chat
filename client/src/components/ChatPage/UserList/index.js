@@ -10,7 +10,6 @@ import { ActionCable } from 'react-actioncable-provider';
 import { getConversations } from "../../../actions/rooms";
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import Cable from "../../Cable";
-import axios from "axios";
 import ajax from "../../../api/ajax";
 
 const UserList = () => {
@@ -19,7 +18,7 @@ const UserList = () => {
   const currentPage = useSelector(state => state.users.page);
   const classes = useStyles();
   const [search, setSearch] = useState('');
-  const [activeRoom, setActiveRoom] = useState({});
+  const [activeRoom, setActiveRoom] = useState(null);
   const chatRooms = useSelector(state => state.rooms.list);
   const [conversations, setConversations] = useState(chatRooms);
   const profile = useSelector(state => state.profile.user);
@@ -107,7 +106,7 @@ const UserList = () => {
   <Cable chatRooms={conversations} handleReceivedMessage={handleReceivedMessage} />
   <List className={classes.root}>
     {!activeRoom ? usersList.map(user => <Fragment key={user.id}>
-      <ListItem onClick={() => createRoom(user.id)}>
+      <ListItem onClick={() => { createRoom(user.id); setActiveRoom({}); }}>
         <ListItemAvatar>
           <CustomizedAvatar initials={initials(user)} />
         </ListItemAvatar>
